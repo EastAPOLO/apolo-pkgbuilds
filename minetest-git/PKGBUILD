@@ -1,0 +1,61 @@
+# Maintainer: Stefan Stojanovic <eastapolo@hotmail.com>
+pkgname=minetest-git
+_pkgname=minetest
+pkgver=20180225.88a7160ad
+pkgrel=1
+pkgdesc='Infiniminer/Minecraft inspired game'
+url='http://www.minetest.net/'
+license=('LGPL2.1' 'CCPL:by-sa')
+arch=('i686' 'x86_64')
+makedepends=('git' 'cmake')
+depends=('bzip2' 'freetype2' 'irrlicht' 'jsoncpp' 'leveldb' 'libjpeg'
+         'libpng' 'libvorbis' 'luajit' 'mesa' 'openal' 'sqlite')
+source=('git://github.com/minetest/'minetest{,_game}.git)
+sha256sums=('SKIP' 'SKIP')
+
+conflicts=("${_pkgname}"{,-common,-server})
+provides=("${_pkgname}"{,-common,-server})
+
+pkgver() {
+	cd "${srcdir}/${_pkgname}"
+	git log -1 --format='%cd.%h' --date=short | tr -d -
+}
+
+prepare() {
+	cd "${srcdir}"
+	cp -a minetest_game minetest/games
+}
+
+build() {
+	cd "${srcdir}/${_pkgname}"
+	cmake . \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DENABLE_GETTEXT=TRUE \
+		-DRUN_IN_PLACE=FALSE \
+		-DBUILD_CLIENT=1 \
+		-DBUILD_SERVER=1 \
+		-DENABLE_LEVELDB=1 \
+		-DENABLE_REDIS=1
+	make
+}
+
+package() {
+	cd "${srcdir}/${_pkgname}"
+	make DESTDIR="${pkgdir}" install
+}
+
+post_install() {
+	type update-desktop-database &>/dev/null && update-desktop-database -q
+	type gtk-update-icon-cache   &>/dev/null && gtk-update-icon-cache -q -t -f usr/share/icons/hicolor
+	true
+}
+
+post_upgrade() {
+	post_install
+}
+
+post_remove() {
+	post_install
+}
+

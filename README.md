@@ -1,2 +1,2 @@
 # apolo-pkgbuilds
-My own Arch Linux PKGBUILDS
+My own Arch Linux PKGBUILDS.
