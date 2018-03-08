@@ -1,7 +1,7 @@
 # Maintainer: Stefan Stojanovic <eastapolo@hotmail.com>
 pkgname=minetest-git
 _pkgname=minetest
-pkgver=20180225.88a7160ad
+pkgver=20180227.e7f161199
 pkgrel=1
 pkgdesc='Infiniminer/Minecraft inspired game'
 url='http://www.minetest.net/'
