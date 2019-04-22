@@ -15,10 +15,6 @@ makedepends=('rust' 'cargo' 'cmake' 'fontconfig' 'ncurses' 'desktop-file-utils')
 source=("${pkgbase}-${_pkgver}.tar.gz::https://github.com/jwilm/${pkgbase}/archive/v${_pkgver}.tar.gz")
 sha256sums=('a5be9e0a55e17a41c244f4717434363305203a786e5cb52b441f151e9b93b380')
 
-prepare(){
-    install -d build
-}
-
 build(){
   cd $pkgbase-$_pkgver
   env CARGO_INCREMENTAL=0 cargo build --release --locked
